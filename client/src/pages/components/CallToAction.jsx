@@ -13,7 +13,7 @@ export const CallToAction = () => {
           className="rounded-tl-xl rounded-tr-none "
         >
           <a
-            href="https://www.100jsprojects.com"
+            href="https://ragnar-portfolio.vercel.app"
             target="_blank"
             rel="noopener noreferrer"
           >
