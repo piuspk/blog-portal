@@ -104,22 +104,20 @@ export const Profile = () => {
     }
     try {
       dispatch(updateStart());
-      const res = await axios.put(
-        `/api/user/update/${currentUser._id}`,
-        formData,
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
-
-      if (!res.statusText) {
-        dispatch(updateFailure(res.data.message));
-        setUpdateUserError(res.data.message);
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        dispatch(updateFailure(data.message));
+        setUpdateUserError(data.message);
       } else {
-        dispatch(updateSuccess(res.data));
+        dispatch(updateSuccess(data));
         setUpdateUserSuccess("User's profile updated successfully");
-        console.log("hello", currentUser.PictureUrl);
       }
     } catch (error) {
       dispatch(updateFailure(error.message));
@@ -128,16 +126,16 @@ export const Profile = () => {
   };
   const handleDeleteUser = async () => {
     setShowModal(false);
-
     try {
       dispatch(deleteUserStart());
-      const res = await axios.delete(`/api/user/delete/${currentUser._id}`, {
-        withCredentials: true,
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
       });
-      if (!res.statusText) {
-        dispatch(deleteUserFailure(res.data.message));
+      const data = await res.json();
+      if (!res.ok) {
+        dispatch(deleteUserFailure(data.message));
       } else {
-        dispatch(deleteUserSuccess(res.data));
+        dispatch(deleteUserSuccess(data));
       }
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
@@ -145,12 +143,12 @@ export const Profile = () => {
   };
   const handleSignout = async () => {
     try {
-      const res = await axios.post("/api/user/signout", {
-        withCredentials: true,
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
       });
-
-      if (!res.statusText) {
-        console.log(res.data.message);
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
       } else {
         dispatch(signoutSuccess());
       }

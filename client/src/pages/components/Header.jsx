@@ -15,11 +15,11 @@ const Header = () => {
   const { theme } = useSelector((state) => state.theme);
   console.log("current", currentUser);
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
-    const searchTermFromUrl = urlParams.get('searchTerm');
+    const searchTermFromUrl = urlParams.get("searchTerm");
     if (searchTermFromUrl) {
       setSearchTerm(searchTermFromUrl);
     }
@@ -28,19 +28,19 @@ const Header = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const urlParams = new URLSearchParams(location.search);
-    urlParams.set('searchTerm', searchTerm);
+    urlParams.set("searchTerm", searchTerm);
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
   };
 
   const handleSignout = async () => {
     try {
-      const res = await axios.post("/api/user/signout", {
-        withCredentials: true,
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
       });
-
-      if (!res.statusText) {
-        console.log(res.data.message);
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
       } else {
         dispatch(signoutSuccess());
       }
@@ -61,10 +61,10 @@ const Header = () => {
       </Link>
       <form onSubmit={handleSubmit}>
         <TextInput
-          type='text'
-          placeholder='Search...'
+          type="text"
+          placeholder="Search..."
           rightIcon={AiOutlineSearch}
-          className='hidden lg:inline'
+          className="hidden lg:inline"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />

@@ -85,22 +85,26 @@ export const UpdatePost = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.put(
+      const res = await fetch(
         `/api/post/updatepost/${formData._id}/${currentUser._id}`,
-        formData,
         {
-          withCredentials: true,
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
         }
       );
-      const data = res.data;
-
-      if (res.status !== 200) {
+      const data = await res.json();
+      if (!res.ok) {
         setPublishError(data.message);
         return;
       }
 
-      setPublishError(null);
-      navigate(`/post/${data.slug}`);
+      if (res.ok) {
+        setPublishError(null);
+        navigate(`/post/${data.slug}`);
+      }
     } catch (error) {
       setPublishError("Something went wrong");
     }
@@ -177,9 +181,12 @@ export const UpdatePost = () => {
             setFormData({ ...formData, content: value });
           }}
         />
-        <Button type="submit" gradientDuoTone="purpleToPink" disabled={imageUploadProgress}>
+        <Button
+          type="submit"
+          gradientDuoTone="purpleToPink"
+          disabled={imageUploadProgress}
+        >
           Update Post
-          
         </Button>
         {publishError && (
           <Alert className="mt-5" color="failure">

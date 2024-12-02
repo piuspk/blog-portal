@@ -2,13 +2,17 @@ import axios from "axios";
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch,useSelector } from "react-redux";
-  import { signInStart,signInSuccess,signInFailure } from "../redux/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../redux/user/userSlice";
 import OAuth from "./components/OAuth";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
-  const {loading,error:errorMessage} = useSelector(state=>state.user);
+  const { loading, error: errorMessage } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleChange = (e) => {
@@ -17,27 +21,28 @@ export default function SignUp() {
   const handleSubmit = async (e) => {
     console.log("hello");
 
-    
     e.preventDefault();
-    if ( !formData.email || !formData.password) {
-      return dispatch(signInFailure('Please fill out the all fields'))
+    if (!formData.email || !formData.password) {
+      return dispatch(signInFailure("Please fill out the all fields"));
     }
     try {
       dispatch(signInStart());
-      const res = await axios.post("/api/auth/signin", formData, {
-        withCredentials: true,
+      const res = await fetch("/api/auth/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
-
-      if (res.success === false) {
-        dispatch(signInFailure(res.data.message));
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(signInFailure(data.message));
       }
-      console.log("ok",res.statusText)
-      if (res.statusText) {
-        dispatch(signInSuccess(res.data));
+
+      if (res.ok) {
+        dispatch(signInSuccess(data));
         navigate("/");
       }
     } catch (error) {
-        dispatch(signInFailure(error.message));
+      dispatch(signInFailure(error.message));
     }
   };
   return (
@@ -82,13 +87,12 @@ export default function SignUp() {
             >
               {loading ? (
                 <>
-                  <Spinner size = 'sm'/>
+                  <Spinner size="sm" />
                   <span className="pl-3">Loading...</span>
                 </>
               ) : (
                 "Sign In"
               )}
-             
             </Button>
             <OAuth />
           </form>

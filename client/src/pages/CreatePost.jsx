@@ -57,27 +57,30 @@ export const CreatePost = () => {
       setImageUploadProgress(null);
       console.log(error);
     }
-}
-    const handleSubmit = async (e) => {
-      try {
-        const res = await axios.post("/api/post/create", formData, {
-          withCredentials: true,
-        });
-
-        if (!res.statusText) {
-          setPublishError(res.data.message);
-          return;
-        }
-
-        if (res.statusText) {
-          setPublishError(null);
-          console.log(res.data)
-            navigate(`/post/${res.data.slug}`);
-        }
-      } catch (error) {
-        setPublishError("Something went wrong");
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("/api/post/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setPublishError(data.message);
+        return;
       }
 
+      if (res.ok) {
+        setPublishError(null);
+        navigate(`/post/${data.slug}`);
+      }
+    } catch (error) {
+      setPublishError("Something went wrong");
+    }
   };
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen">

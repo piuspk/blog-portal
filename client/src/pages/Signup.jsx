@@ -21,22 +21,17 @@ export default function SignUp() {
     try {
       setLoading(true);
       setErrorMessage(null);
-      // const res = await fetch('/api/auth/signup', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(formData),
-      // });
-      // const data = await res.json();
-      const res = await axios.post("/api/auth/signup", formData, {
-        withCredentials: true,
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
-
-      if (res.success === false) {
+      const data = await res.json();
+      if (data.success === false) {
         return setErrorMessage(data.message);
       }
-      console.log("ok",res.statusText)
       setLoading(false);
-      if (res.statusText) {
+      if (res.ok) {
         navigate("/sign-in");
       }
     } catch (error) {
@@ -95,7 +90,7 @@ export default function SignUp() {
             >
               {loading ? (
                 <>
-                  <Spinner size = 'sm'/>
+                  <Spinner size="sm" />
                   <span className="pl-3">Loading...</span>
                 </>
               ) : (

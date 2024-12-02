@@ -30,12 +30,12 @@ export const DashSidebar = () => {
   }, [location.search]);
   const handleSignout = async () => {
     try {
-      const res = await axios.post("/api/user/signout", {
-        withCredentials: true,
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
       });
-
-      if (!res.statusText) {
-        console.log(res.data.message);
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
       } else {
         dispatch(signoutSuccess());
       }
@@ -91,11 +91,11 @@ export const DashSidebar = () => {
                   Users
                 </Sidebar.Item>
               </Link>
-              <Link to='/dashboard?tab=comments'>
+              <Link to="/dashboard?tab=comments">
                 <Sidebar.Item
-                  active={tab === 'comments'}
+                  active={tab === "comments"}
                   icon={HiAnnotation}
-                  as='div'
+                  as="div"
                 >
                   Comments
                 </Sidebar.Item>
