@@ -6,6 +6,7 @@ import {
   BsTwitter,
   BsGithub,
   BsDribbble,
+  BsLinkedin,
 } from "react-icons/bs";
 export default function FooterCom() {
   return (
@@ -28,11 +29,11 @@ export default function FooterCom() {
               <Footer.Title title="About" />
               <Footer.LinkGroup col>
                 <Footer.Link
-                  href="https://www.100jsprojects.com"
+                  href="https://ragnar-portfolio.vercel.app/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  100 JS Projects
+                  Portfolio
                 </Footer.Link>
                 <Footer.Link
                   href="/about"
@@ -53,7 +54,7 @@ export default function FooterCom() {
                 >
                   Github
                 </Footer.Link>
-                <Footer.Link href="#">Discord</Footer.Link>
+                <Footer.Link href="https://www.linkedin.com/in/piyush-kumar-519275227">Linkedin</Footer.Link>
               </Footer.LinkGroup>
             </div>
             <div>
@@ -73,9 +74,9 @@ export default function FooterCom() {
             year={new Date().getFullYear()}
           />
           <div className="flex gap-6 sm:mt-0 mt-4 sm:justify-center">
-            <Footer.Icon href="#" icon={BsFacebook} />
-            <Footer.Icon href="#" icon={BsInstagram} />
-            <Footer.Icon href="#" icon={BsTwitter} />
+            <Footer.Icon href="https://www.facebook.com/profile.php?id=100009340407677" icon={BsFacebook} />
+            <Footer.Icon href="https://www.instagram.com/_ragnar_pk/" icon={BsInstagram} />
+            <Footer.Icon href="https://www.linkedin.com/in/piyush-kumar-519275227" icon={BsLinkedin} />
             <Footer.Icon href="https://github.com/piuspk" icon={BsGithub} />
           </div>
         </div>
