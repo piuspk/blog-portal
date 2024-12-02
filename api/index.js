@@ -37,7 +37,7 @@ app.use('/api/post', postRoutes);
 app.use('/api/comment', commentRoutes);
 
 // Serve static files from the client
-app.use(express.static(path.join(__dirname, 'client/dist')));
+app.use(express.static(path.join(__dirname, '/client/dist')));
 
 // Handle client-side routing for SPA (React/Next.js)
 app.get('*', (req, res) => {
